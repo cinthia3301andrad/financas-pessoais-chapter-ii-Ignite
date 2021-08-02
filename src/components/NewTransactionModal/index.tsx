@@ -6,6 +6,7 @@ import iconIncome from "../../assets/income.svg";
 import iconOutcome from "../../assets/outcome.svg";
 import iconClose from "../../assets/close.svg";
 import { Container, RadioBox, TransactionTypeContainer } from "./styles";
+import { api } from "../../services/api";
 
 interface NewTransactionModalProps {
   isOpen: boolean;
@@ -24,7 +25,16 @@ export function NewTransactionModal({
   /* handle - lidar com: ação do usuario */
   function handleCreateNewTransaction(event: FormEvent) {
     event.preventDefault();
-    console.log(event);
+
+    const data = {
+      title,
+      value,
+      category,
+      type,
+    };
+
+    api.post("/transactions", data);
+    console.log(title, value, category, type);
   }
   return (
     <Modal
