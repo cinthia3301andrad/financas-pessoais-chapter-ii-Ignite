@@ -19,17 +19,26 @@ export function NewTransactionModal({
 }: NewTransactionModalProps) {
   const { createTransaction } = useTransactions();
   const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState('');
   const [category, setCategory] = useState("");
   const [type, setType] = useState("deposit");
 
+
+   const moneyMask = (value: string) => {
+    value = value.replace('.', '').replace(',', '').replace(/\D/g, '')
+  
+    const result = Number(value).toLocaleString('pt-br');
+
+    return  result.toString();
+  }
+  
   /* handle - lidar com: ação do usuario */
   async function handleCreateNewTransaction(event: FormEvent) {
     event.preventDefault();
     await createTransaction({ title, amount, category, type });
 
     setTitle("");
-    setAmount(0);
+    setAmount("");
     setCategory("");
     setType("deposit");
     onRequestClose();
@@ -51,16 +60,20 @@ export function NewTransactionModal({
       <Container onSubmit={handleCreateNewTransaction}>
         <h2>Cadastrar Transação</h2>
         <input
+          
+          type="text"
           placeholder="Título"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
         />
         <input
-          min={0}
-          type="number"
+          id="amount"
           placeholder="Valor"
           value={amount}
-          onChange={(event) => setAmount(Number(event.target.value))}
+          onChange={(event) => {  
+            setAmount(moneyMask(event.target.value));
+              
+          }}
         />
         <TransactionTypeContainer>
           <RadioBox
@@ -84,6 +97,7 @@ export function NewTransactionModal({
         </TransactionTypeContainer>
 
         <input
+          type="text"
           placeholder="Categoria"
           value={category}
           onChange={(event) => setCategory(event.target.value)}

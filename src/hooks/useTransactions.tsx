@@ -13,7 +13,7 @@ const TransactionsContext = createContext<TransactionsContextData>(
 interface Transaction {
   id: number;
   title: string;
-  amount: number;
+  amount: string;
   type: string;
   category: string;
   createdAt: string;
